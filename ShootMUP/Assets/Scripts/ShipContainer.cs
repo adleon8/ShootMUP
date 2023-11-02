@@ -9,7 +9,6 @@ using UnityEngine.InputSystem;
  * [This file contains functions to be used for control and player input.]
  */
 
-// Player Movement
 
 public class ShipContainer : MonoBehaviour
 {
@@ -17,6 +16,7 @@ public class ShipContainer : MonoBehaviour
     public float speed = 10f;
     private Vector3 moveVector = Vector3.left;
     PlayerInput playerActions;
+    public Rigidbody rigidbody;
 
     private void Awake()
     {
@@ -29,6 +29,7 @@ public class ShipContainer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
         // Gets Vector2 data from the move action composite
         Vector2 moveVec = playerActions.PlayerInGameActions.WASDMovement.ReadValue<Vector2>();
 
@@ -65,14 +66,12 @@ public class ShipContainer : MonoBehaviour
     public bool IsMovingRight()
     {
         // Checks and returns true if any of the keys are pressed.
-        return Keyboard.current.rightArrowKey.isPressed;
-        return Keyboard.current.dKey.isPressed;
+        return Keyboard.current.rightArrowKey.isPressed || Keyboard.current.dKey.isPressed;
     }
 
     public bool IsMovingLeft()
     {
         // Checks and returns true if any of the keys are pressed.
-        return Keyboard.current.leftArrowKey.isPressed;
-        return Keyboard.current.aKey.isPressed;
+        return Keyboard.current.leftArrowKey.isPressed || Keyboard.current.aKey.isPressed;
     }
 }
