@@ -12,18 +12,31 @@ using UnityEngine.InputSystem;
 
 public class ShipContainer : MonoBehaviour
 {
-    // -----VARIABLES-----
-    public float speed = 10f;
-    private Vector3 moveVector = Vector3.left;
-    PlayerInput playerActions;
-    public Rigidbody rigidbody;
+    // -----PLAYER MOVEMENT AND POSITION VARIABLES-----
+    public float speed = 10f;                   // Speed. 
+    private Vector3 moveVector = Vector3.left;  // Movement vector.
+    PlayerInput playerActions;                  // Input system variable.
+    private Rigidbody rigidbody;                // Rigidbody.
+    private Vector3 startPosition;              // Start position for respawn variables.
+    public GameObject spawn;                    // Spawn.
+
+    // -----LASER VARIABLES-----
+    public Transform firePoint;                 // Sets the point from which a laser will be fired from the gun. 
+    public GameObject laserPrefab;              // Laser prefab.
+    public bool allowFire = true;               // Decides whether to enable shooting.
 
     private void Awake()
     {
-        playerActions = new PlayerInput();
-        // Enable input class
+        // Spawn position.
+        transform.position = spawn.transform.position;
+        startPosition = transform.position;
+
+        // Enable input class.
+        playerActions = new PlayerInput();       
         playerActions.Enable();
 
+        // Rigidbody.
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -47,9 +60,24 @@ public class ShipContainer : MonoBehaviour
 
         // Apply the move vector to the player
         transform.Translate(movementDirection * speed * Time.deltaTime);
+
+        // Checks if player is pressing space to shoot and if allowFire is true.
+        if (Input.GetButtonDown("Fire1") && (allowFire))
+        {
+            // Starts the laser coroutine. 
+            StartCoroutine(Laser());
+        }
     }
 
     // -----METHODS-----
+
+    IEnumerator Laser()
+    {
+        allowFire = false;
+        Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+        yield return new WaitForSeconds(.2f);
+        allowFire = true;
+    }
 
     public void Move(InputAction.CallbackContext context)
     {

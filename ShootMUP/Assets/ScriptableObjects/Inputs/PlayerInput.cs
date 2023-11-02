@@ -44,6 +44,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SpaceLaser"",
+                    ""type"": ""Value"",
+                    ""id"": ""9639c64b-fd5a-418a-88fa-c8e3e3f90123"",
+                    ""expectedControlType"": ""Key"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -112,6 +121,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""ArrowMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4bff08c7-f4a7-4dc0-b43e-d324d6b8ccb5"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpaceLaser"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +142,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlayerInGameActions = asset.FindActionMap("PlayerInGameActions", throwIfNotFound: true);
         m_PlayerInGameActions_WASDMovement = m_PlayerInGameActions.FindAction("WASDMovement", throwIfNotFound: true);
         m_PlayerInGameActions_ArrowMovement = m_PlayerInGameActions.FindAction("ArrowMovement", throwIfNotFound: true);
+        m_PlayerInGameActions_SpaceLaser = m_PlayerInGameActions.FindAction("SpaceLaser", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -185,12 +206,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private List<IPlayerInGameActionsActions> m_PlayerInGameActionsActionsCallbackInterfaces = new List<IPlayerInGameActionsActions>();
     private readonly InputAction m_PlayerInGameActions_WASDMovement;
     private readonly InputAction m_PlayerInGameActions_ArrowMovement;
+    private readonly InputAction m_PlayerInGameActions_SpaceLaser;
     public struct PlayerInGameActionsActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerInGameActionsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @WASDMovement => m_Wrapper.m_PlayerInGameActions_WASDMovement;
         public InputAction @ArrowMovement => m_Wrapper.m_PlayerInGameActions_ArrowMovement;
+        public InputAction @SpaceLaser => m_Wrapper.m_PlayerInGameActions_SpaceLaser;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInGameActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -206,6 +229,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @ArrowMovement.started += instance.OnArrowMovement;
             @ArrowMovement.performed += instance.OnArrowMovement;
             @ArrowMovement.canceled += instance.OnArrowMovement;
+            @SpaceLaser.started += instance.OnSpaceLaser;
+            @SpaceLaser.performed += instance.OnSpaceLaser;
+            @SpaceLaser.canceled += instance.OnSpaceLaser;
         }
 
         private void UnregisterCallbacks(IPlayerInGameActionsActions instance)
@@ -216,6 +242,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @ArrowMovement.started -= instance.OnArrowMovement;
             @ArrowMovement.performed -= instance.OnArrowMovement;
             @ArrowMovement.canceled -= instance.OnArrowMovement;
+            @SpaceLaser.started -= instance.OnSpaceLaser;
+            @SpaceLaser.performed -= instance.OnSpaceLaser;
+            @SpaceLaser.canceled -= instance.OnSpaceLaser;
         }
 
         public void RemoveCallbacks(IPlayerInGameActionsActions instance)
@@ -237,5 +266,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         void OnWASDMovement(InputAction.CallbackContext context);
         void OnArrowMovement(InputAction.CallbackContext context);
+        void OnSpaceLaser(InputAction.CallbackContext context);
     }
 }
