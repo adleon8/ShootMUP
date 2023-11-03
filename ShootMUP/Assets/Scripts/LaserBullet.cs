@@ -22,7 +22,7 @@ public class LaserBullet : MonoBehaviour
     {
        if (yPosition >= maxHeight)
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 
@@ -30,4 +30,5 @@ public class LaserBullet : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
 }

@@ -75,7 +75,7 @@ public class ShipContainer : MonoBehaviour
     {
         allowFire = false;
         Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.1f);
         allowFire = true;
     }
 
