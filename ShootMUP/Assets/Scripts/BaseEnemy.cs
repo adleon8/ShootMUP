@@ -7,6 +7,8 @@ public class BaseEnemy : MonoBehaviour
     // -----VARIABLES-----
     public float health = 3;
     public float laserDamage = 1;
+    public float speed = 10f;
+
 
     private void FixedUpdate()
     {
