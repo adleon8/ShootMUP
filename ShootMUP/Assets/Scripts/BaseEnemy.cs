@@ -7,12 +7,21 @@ public class BaseEnemy : MonoBehaviour
     // -----VARIABLES-----
     public float health = 3;
     public float laserDamage = 1;
+
+    // -----MOVEMENT-----
     public float speed = 10f;
+    private Vector3 moveVector = Vector3.down;
 
 
     private void FixedUpdate()
     {
-        
+        Move();
+    }
+
+
+    private void Move()
+    {
+        transform.Translate(moveVector * speed * Time.deltaTime);
     }
 
 
