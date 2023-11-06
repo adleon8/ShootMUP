@@ -9,21 +9,35 @@ public class BaseEnemy : MonoBehaviour
     public float laserDamage = 1;
 
     // -----MOVEMENT-----
-    public float speed = 10f;
-    private Vector3 moveVector = Vector3.down;
+    public float speed = 6f;
 
 
-    private void FixedUpdate()
+
+
+    private void Update()
     {
         Move();
     }
 
 
-    private void Move()
+    public virtual void Move()
     {
-        transform.Translate(moveVector * speed * Time.deltaTime);
+        Vector3 tempPos = pos;
+        tempPos.y -= speed * Time.deltaTime; // Moving down the screen at a fixed way.
+        pos = tempPos;
     }
 
+    public Vector3 pos
+    {
+        get
+        {
+            return this.transform.position;
+        }
+        set
+        {
+            this.transform.position = value;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
