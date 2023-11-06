@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3307686894912276549}
   m_Layer: 0
   m_Name: FrozenEnemy
-  m_TagString: Untagged
+  m_TagString: FrozenEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,7 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
-  laserDamage: 1
   speed: 6
   frozen: 1
   frozenSpeed: 1

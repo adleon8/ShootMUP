@@ -6,10 +6,10 @@ public class BaseEnemy : MonoBehaviour
 {
     // -----VARIABLES-----
     public float health = 3;
-    public float laserDamage = 1;
 
     // -----MOVEMENT-----
     public float speed = 6f;
+    public float boundary = -14f;
 
 
 
@@ -17,6 +17,12 @@ public class BaseEnemy : MonoBehaviour
     private void Update()
     {
         Move();
+
+        // Checks bounds.
+        if (transform.position.y <= boundary)
+        {
+            Destroy(gameObject);
+        }
     }
 
 

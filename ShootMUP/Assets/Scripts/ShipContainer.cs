@@ -25,8 +25,15 @@ public class ShipContainer : MonoBehaviour
     public GameObject laserPrefab;              // Laser prefab.
     public bool allowFire = true;               // Decides whether to enable shooting.
 
+    // -----RESPAWN VARIABLES-----
+    public float health = 3;
+    public bool gameActive;
+    public bool isRespawning;
+
     private void Awake()
     {
+        gameActive = false;
+
         // Spawn position.
         transform.position = spawn.transform.position;
         startPosition = transform.position;
@@ -42,6 +49,24 @@ public class ShipContainer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        // When the game is inactive.
+        if (!gameActive && isRespawning)
+        {
+            Destroy(GameObject.FindWithTag("BaseEnemy"));
+            Destroy(GameObject.FindWithTag("FastEnemy"));
+            Destroy(GameObject.FindWithTag("ZigEnemy"));
+            Destroy(GameObject.FindWithTag("FrozenEnemy"));
+            Destroy(GameObject.FindWithTag("StalkerEnemy"));
+        }
+
+        // Checks if the player has pressed space to activate the game.
+        if (!gameActive && (Input.anyKey))
+        {
+            isRespawning = false;
+            gameActive = true;
+        }
+
+
 
         // Gets Vector2 data from the move action composite
         Vector2 moveVec = playerActions.PlayerInGameActions.WASDMovement.ReadValue<Vector2>();
@@ -71,11 +96,70 @@ public class ShipContainer : MonoBehaviour
 
     // -----METHODS-----
 
-    IEnumerator Laser()
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "BaseEnemy")
+        {            
+            Damage();
+        }
+        if (other.gameObject.tag == "ZigEnemy")
+        {
+            Damage();
+        }
+        if (other.gameObject.tag == "FrozenEnemy")
+        {
+            Damage();
+        }
+        if (other.gameObject.tag == "StalkerEnemy")
+        {
+            Damage();
+        }
+        if (other.gameObject.tag == "FastEnemy")
+        {
+            Damage();
+        }
+    }
+
+    private void Death()
+    {
+        gameActive = false;
+        isRespawning = true;
+        transform.position = startPosition;
+        health = 3;
+    }
+
+    private IEnumerator Blink()
+    {
+        for (int index = 0; index < 4; index++)
+        {
+            if (index % 2 == 0)
+            {
+                GetComponent<MeshRenderer>().enabled = false;
+            }
+            else
+            {
+                GetComponent<MeshRenderer>().enabled = true;
+            }
+            yield return new WaitForSeconds(.1f);
+        }
+        GetComponent<MeshRenderer>().enabled = true;
+    }
+
+    public void Damage()
+    {
+        health--;
+        StartCoroutine(Blink());
+        if (health <= 0)
+        {
+            Death();
+        }
+    }
+
+    private IEnumerator Laser()
     {
         allowFire = false;
         Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.05f);
         allowFire = true;
     }
 

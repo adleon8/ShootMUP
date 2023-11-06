@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Laser
+  - BaseEnemy
+  - FastEnemy
+  - FrozenEnemy
+  - StalkerEnemy
+  - ZigEnemy
   layers:
   - Default
   - TransparentFX
