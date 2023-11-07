@@ -23,6 +23,7 @@ public class BaseEnemy : MonoBehaviour
 
     private void Start()
     {
+        /*
         randomPowerUp = Random.Range(0, 1); 
         if (randomPowerUp < 1)
         {
@@ -32,6 +33,7 @@ public class BaseEnemy : MonoBehaviour
         {
             Instantiate(spreadPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         }
+        */
     }
 
     private void Update()
@@ -47,7 +49,7 @@ public class BaseEnemy : MonoBehaviour
 
     public int RandomPowerUp()
     {
-        return Random.Range(0, 5);
+        return Random.Range(0, 6);
     }
 
     public virtual void Move()
@@ -80,7 +82,19 @@ public class BaseEnemy : MonoBehaviour
 
     private void Death()
     {
-        // Instantiate powerup here.
+        int randomPower = RandomPowerUp();
+        if (randomPower == 3)
+        {
+            Instantiate(blasterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        }
+        if (randomPower == 4)
+        {
+            Instantiate(spreadPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        }
+        if (randomPower == 5)
+        {
+            Instantiate(blasterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        }
 
         Destroy(gameObject);
     }
