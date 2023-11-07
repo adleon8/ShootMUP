@@ -12,7 +12,27 @@ public class BaseEnemy : MonoBehaviour
     public float boundary = -14f;
 
 
+    // -----POWERUPS-----
+    [SerializeField]
+    private float randomPowerUp;
 
+    public GameObject blasterPrefab;
+    public GameObject spreadPrefab;
+    public GameObject shieldPrefab;
+
+
+    private void Start()
+    {
+        randomPowerUp = Random.Range(0, 1); 
+        if (randomPowerUp < 1)
+        {
+            Instantiate(blasterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        }
+        if (randomPowerUp == 1)
+        {
+            Instantiate(spreadPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        }
+    }
 
     private void Update()
     {
@@ -25,6 +45,10 @@ public class BaseEnemy : MonoBehaviour
         }
     }
 
+    public int RandomPowerUp()
+    {
+        return Random.Range(0, 5);
+    }
 
     public virtual void Move()
     {
@@ -56,6 +80,8 @@ public class BaseEnemy : MonoBehaviour
 
     private void Death()
     {
+        // Instantiate powerup here.
+
         Destroy(gameObject);
     }
 
@@ -87,3 +113,7 @@ public class BaseEnemy : MonoBehaviour
     }
 
 }
+
+
+
+
