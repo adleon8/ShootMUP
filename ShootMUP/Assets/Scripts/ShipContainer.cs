@@ -19,16 +19,20 @@ public class ShipContainer : MonoBehaviour
     private Rigidbody rigidbody;                // Rigidbody.
     private Vector3 startPosition;              // Start position for respawn variables.
     public GameObject spawn;                    // Spawn.
+    private float maxRight = 7.3f;              // Maximum distance the player can be in the map's right side
+    private float maxLeft = -7.3f;              // Maximum distance the player can be in the map's left side. 
 
     // -----LASER VARIABLES-----
+    public bool laserGun;
     public Transform firePoint;                 // Sets the point from which a laser will be fired from the gun. 
     public GameObject laserPrefab;              // Laser prefab.
+    public GameObject blasterPrefab;
     public bool allowFire = true;               // Decides whether to enable shooting.
 
     // -----RESPAWN VARIABLES-----
-    public float health = 3;
-    public bool gameActive;
-    public bool isRespawning;
+    public float health = 3;                    // Player's health.
+    public bool gameActive;                     // Checks if game is activated by any key. 
+    public bool isRespawning;                   // Checks if the player is going through the respawn methods.
 
     private void Awake()
     {
@@ -80,17 +84,21 @@ public class ShipContainer : MonoBehaviour
         // Calculate moving direction by normalizing the vector (making it a unit vector).
         Vector3 movementDirection = new Vector3(movementVec.x, 0, movementVec.y).normalized;
 
-        // Apply the move vector to the player
+        // Apply the move vector to the player.
         transform.Translate(moveDirection * speed * Time.deltaTime);
 
-        // Apply the move vector to the player
+        // Apply the move vector to the player.
         transform.Translate(movementDirection * speed * Time.deltaTime);
 
         // Checks if player is pressing space to shoot and if allowFire is true.
-        if (Input.GetButtonDown("Fire1") && (allowFire))
+        if (Input.GetButtonDown("Fire1") && (allowFire) && (laserGun))
         {
             // Starts the laser coroutine. 
             StartCoroutine(Laser());
+        }
+        if (Input.GetButtonDown("Fire1") && (allowFire) && (!laserGun))
+        {
+            StartCoroutine(Blaster());
         }
     }
 
@@ -118,7 +126,13 @@ public class ShipContainer : MonoBehaviour
         {
             Damage();
         }
+        if (other.gameObject.tag == "Blaster")
+        {
+            Blaster();
+        }
     }
+
+    
 
     private void Death()
     {
@@ -155,12 +169,36 @@ public class ShipContainer : MonoBehaviour
         }
     }
 
+    private IEnumerator Blaster()
+    {
+        laserGun = false;
+        float duration = 5.0f;
+        float endTime = Time.time + duration;
+
+        while (Time.time < endTime)
+        {
+            if (!laserGun)
+            {
+                allowFire = false;
+                Instantiate(blasterPrefab, firePoint.position, firePoint.rotation);
+                yield return new WaitForSeconds(.05f);
+                laserGun = true;
+                allowFire = true;
+            }
+        }
+    }
+
     private IEnumerator Laser()
     {
-        allowFire = false;
-        Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
-        yield return new WaitForSeconds(.05f);
-        allowFire = true;
+        laserGun = true; 
+
+        if (laserGun)
+        {
+            allowFire = false;
+            Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            yield return new WaitForSeconds(.05f);
+            allowFire = true;
+        }       
     }
 
     public void Move(InputAction.CallbackContext context)

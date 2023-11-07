@@ -20,22 +20,6 @@ public class BaseEnemy : MonoBehaviour
     public GameObject spreadPrefab;
     public GameObject shieldPrefab;
 
-
-    private void Start()
-    {
-        /*
-        randomPowerUp = Random.Range(0, 1); 
-        if (randomPowerUp < 1)
-        {
-            Instantiate(blasterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        }
-        if (randomPowerUp == 1)
-        {
-            Instantiate(spreadPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        }
-        */
-    }
-
     private void Update()
     {
         Move();
@@ -77,23 +61,28 @@ public class BaseEnemy : MonoBehaviour
         {
             Damage();
         }
+        if (other.gameObject.tag == "Blaster")
+        {
+            Death();
+        }
     }
 
 
     private void Death()
     {
+        Vector3 deathPosition = transform.position;
         int randomPower = RandomPowerUp();
         if (randomPower == 3)
         {
-            Instantiate(blasterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            Instantiate(blasterPrefab, deathPosition, Quaternion.identity);
         }
         if (randomPower == 4)
         {
-            Instantiate(spreadPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            Instantiate(blasterPrefab, deathPosition, Quaternion.identity);
         }
         if (randomPower == 5)
         {
-            Instantiate(blasterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            Instantiate(blasterPrefab, deathPosition, Quaternion.identity);
         }
 
         Destroy(gameObject);

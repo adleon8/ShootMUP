@@ -8,7 +8,7 @@ public class LaserBullet : MonoBehaviour
     public float speed = 10f;           // Speed variable.
     public Rigidbody rigidbody;         // Rigidbody.
     private float yPosition;
-    private float maxHeight;
+    private float maxHeight = 17f;
 
     void Start()
     {
